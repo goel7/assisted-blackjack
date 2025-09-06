@@ -19,6 +19,17 @@ void dealInitialHands(GameState& game, const std::vector<std::string>& deck) {
     game.dealerHand.push_back(deck[nextCard(game)]);
 }
 
+// std::vector<std::string> getPlayerTotal(GameState& game) {
+//     const std::vector<std::vector<std::string>> hand = game.playerHands;
+//     const std::vector<std::string> playerTotals;
+
+//     for (size_t i {0}; i < hand.size(); ++i) {
+//         for (size_t j {0}; j < hand[i].size(); ++j) {
+//             std::cout << game.playerHands[i][j];
+//         }
+//     }
+// }
+
 void printPlayerHand(GameState& game) {
     const std::vector<std::vector<std::string>> hand = game.playerHands;
     std::cout << "Player hand(s): ";
@@ -29,8 +40,6 @@ void printPlayerHand(GameState& game) {
         }
         std::cout << '\t';
     }
-    
-    std::cout << '\n';
 }
 
 void printDealerHand(GameState& game) {
@@ -40,6 +49,4 @@ void printDealerHand(GameState& game) {
     for (size_t i {0}; i < hand.size(); ++i) {
         std::cout << game.dealerHand[i];
     }
-    
-    std::cout << '\n';
 }
