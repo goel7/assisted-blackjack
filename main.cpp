@@ -20,19 +20,15 @@ GameState game;
 int main() {
     auto deck {Deck::getShuffledDeck()};
     dealInitialHands(game, deck);
-    
-    Deck::print(deck);
-    
+    int upcard = game.dealerUpcard;
+
+    printDealerHand(game);
+    std::cout << '\n';
     printPlayerHand(game);
     std::cout << '\n';
-    printDealerHand(game);
 
-    
-    /*
-    Next part:
-        - pass in dealer & player hands to decision engine
-        - create auto and manual plays for player 
-    */
+    std::cout << getDealerTotal(game) << " " << getPlayerTotal(game) << '\n';
+    std::cout << upcard;
 
     return 0;
 }

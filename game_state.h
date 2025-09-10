@@ -6,8 +6,15 @@
 
 struct GameState {
     size_t dealCard {0};
-    std::vector<std::string> dealerHand;
-    std::vector<std::vector<std::string>> playerHands;
+
+    int dealerUpcard;
+    std::vector<std::string> dealerHand; // with suit, for display
+    std::vector<int> dealerCardValues; // no suit, for backend
+
+    std::vector<std::vector<std::string>> playerHands; // with suit, for display
+    
+    // imo, just create new function, and manually calc values.
+    // std::vector<std::vector<int>> playerCardValues; // no suit, for backend
 };
 
 #endif

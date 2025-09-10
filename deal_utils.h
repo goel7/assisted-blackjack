@@ -8,8 +8,14 @@
 
 void dealInitialHands(GameState& game, const std::vector<std::string>& deck);
 
+// int getPlayerTotal(GameState& game);
+// int getDealerTotal(GameState& game);
+
 void printPlayerHand(GameState& game);
 void printDealerHand(GameState& game);
+
+int getPlayerTotal(GameState& game);
+int getDealerTotal(GameState& game);
 
 
 #endif
