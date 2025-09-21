@@ -10,6 +10,7 @@ h: hit
 s: stand
 x: split
 d: double
+r: surrender
 
 This is for initial stage when game is played in terminal.
 When moving to web interface, use buttons obviously.
@@ -20,15 +21,27 @@ GameState game;
 int main() {
     auto deck {Deck::getShuffledDeck()};
     dealInitialHands(game, deck);
-    int upcard = game.dealerUpcard;
+    [[maybe_unused]] int upcard = game.dealerUpcard;
 
     printDealerHand(game);
     std::cout << '\n';
     printPlayerHand(game);
     std::cout << '\n';
 
-    std::cout << getDealerTotal(game) << " " << getPlayerTotal(game) << '\n';
-    std::cout << upcard;
+// TESTING STAGE HERE
 
-    return 0;
+    // int action {};
+    // std::cout << 'Enter action: ';
+    // std::cin >> action;
+
+    // if (action == 0) playerHit(game, deck);
+
+    // playerHit(game, deck);
+    // printPlayerHand(game);
+    // std::cout << '\n';  
+
+    // std::cout << getDealerTotal(game) << " " << getPlayerTotal(game) << '\n';
+    // std::cout << upcard;
+
+    // return 0;
 }
