@@ -1,6 +1,5 @@
 #include "deck_utils.h"
-#include "deal_utils.h"
-#include "game_state.h"
+#include "game_utils.h"
 
 #include <iostream>
 
@@ -16,32 +15,43 @@ This is for initial stage when game is played in terminal.
 When moving to web interface, use buttons obviously.
 */
 
-GameState game;
-
 int main() {
-    auto deck {Deck::getShuffledDeck()};
-    dealInitialHands(game, deck);
-    [[maybe_unused]] int upcard = game.dealerUpcard;
+    int cards[52];
+    Deck::shuffle(cards);
+    Deck::printIds(cards);
+    Deck::print(cards);
+    int nextCard {0}; // index for next card to be dealt
 
-    printDealerHand(game);
+    // initialize gameplay
+    int dealerHand[12];
+    int playerHand[12];
+
+    playerHand[0] = cards[nextCard++];
+    dealerHand[0] = cards[nextCard++];
+    playerHand[1] = cards[nextCard++];
+    dealerHand[1] = cards[nextCard++];
+
+    int playerHandSize = 2;
+    // int playerScore {Game::getScore(playerHand, playerHandSize)};
+
+
+    // Display initial output
+    std::cout << "Dealer: ? ";
+    Game::printCard(dealerHand[1]);
     std::cout << '\n';
-    printPlayerHand(game);
+
+    std::cout << "Player: ";
+    Game::printHand(playerHand, playerHandSize);
     std::cout << '\n';
 
-// TESTING STAGE HERE
+    Deck::print(cards);
 
-    // int action {};
-    // std::cout << 'Enter action: ';
-    // std::cin >> action;
-
-    // if (action == 0) playerHit(game, deck);
-
-    // playerHit(game, deck);
-    // printPlayerHand(game);
-    // std::cout << '\n';  
-
-    // std::cout << getDealerTotal(game) << " " << getPlayerTotal(game) << '\n';
-    // std::cout << upcard;
-
-    // return 0;
+    return 0;
 }
+
+/*
+Next steps:
+- Create matrix (2d array) for player hands to allow splitting
+- Handle player splitting, hitting on all hands, etc.
+- Introduce betting later.
+*/
