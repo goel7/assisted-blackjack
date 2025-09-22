@@ -43,4 +43,25 @@ namespace Game {
 
         return total;
     }
+
+    void printActionGuide() {
+        std::cout << "Type for action:\n";
+        std::cout << "* h: hit\n* s: stand\n* x: split\n";
+        std::cout << "* d: double down\n* r: surrender\n";
+        std::cout << "* p: see valid actions\n\n";
+    }
+
+    void printInitialHands(
+        int dealerHand[], 
+        int playerHand[], 
+        int playerHandSize
+    ) {
+        std::cout << "Dealer: ? ";
+        Game::printCard(dealerHand[1]);
+        std::cout << '\n';
+
+        std::cout << "Player: ";
+        Game::printHand(playerHand, playerHandSize);
+        std::cout << '\n';
+    }
 }
