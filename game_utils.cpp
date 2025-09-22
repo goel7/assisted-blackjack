@@ -8,6 +8,10 @@ namespace Game {
         return value[id % 13];
     }
 
+    char getCardRank(int id) {
+        return type[id % 13][0];
+    }
+
     void printCard(int id) {
         int rank {id % 13};
         int s {id / 13};
