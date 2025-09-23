@@ -74,22 +74,39 @@ namespace Game {
     }
 
     void printOutcome(
-        int dealerScore, 
-        int playerScore, 
-        std::string_view playerRef
+        int dealerHand[],
+        int dealerHandSize,
+        int playerHand[][12],
+        int playerHandSize[],
+        int numHands,
+        bool split
     ) {
-        if (dealerScore > 21) {
-            std::cout << "Dealer busts.\n";
-            std::cout << playerRef << " wins\n";
-        }
-        else if (dealerScore > playerScore) {
-            std::cout << playerRef << " loses\n";
-        }
-        else if (dealerScore < playerScore) {
-            std::cout << playerRef << " wins\n";
-        }
-        else {
-            std::cout << playerRef << " ties\n";
+        for (int i {0}; i < numHands; ++i) {
+            std::string playerRef = split ? "Hand " + std::to_string(i + 1) : "Player";
+            
+            int playerScore {Game::getScore(
+                playerHand[i], 
+                playerHandSize[i]
+            )};
+
+            int dealerScore {Game::getScore(
+                dealerHand,
+                dealerHandSize
+            )};
+
+            if (dealerScore > 21) {
+                if (i == 0) std::cout << "Dealer busts.\n";
+                std::cout << playerRef << " wins\n";
+            }
+            else if ((dealerScore > playerScore) || (playerScore > 21)) {
+                std::cout << playerRef << " loses\n";
+            }
+            else if ((dealerScore < playerScore) && (playerScore <= 21)) {
+                std::cout << playerRef << " wins\n";
+            }
+            else {
+                std::cout << playerRef << " ties\n";
+            }
         }
     }
 }

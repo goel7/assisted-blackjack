@@ -10,7 +10,7 @@ namespace Game {
     void printActionGuide();
     void printCard(int id);
     void printHand(int hand[], int size);
-    
+
     void printInitialHands(
         int dealerHand[], 
         int playerHand[], 
@@ -21,9 +21,12 @@ namespace Game {
     bool anyNonBust(bool arr[], int arrSize);
     
     void printOutcome(
-        int dealerScore, 
-        int playerScore, 
-        std::string_view playerRef
+        int dealerHand[],
+        int dealerHandSize,
+        int playerHand[][12],
+        int playerHandSize[],
+        int numhands,
+        bool split
     );
 }
 
