@@ -3,35 +3,15 @@
 
 #include <iostream>
 
-// check if any hand is a non-bust hand for dealer actions
-bool anyNonBust(bool arr[], int arrSize) {
-    for (int i {0}; i < arrSize; ++i) {
-        if (!arr[i]) return true;
-    }
-    return false;
-}
-
-void printOutcome(int dealerScore, int playerScore, std::string_view playerRef) {
-    if (dealerScore > 21) {
-        std::cout << "Dealer busts.\n";
-        std::cout << playerRef << " wins\n";
-    }
-    else if (dealerScore > playerScore) {
-        std::cout << playerRef << " loses\n";
-    }
-    else if (dealerScore < playerScore) {
-        std::cout << playerRef << " wins\n";
-    }
-    else {
-        std::cout << playerRef << " ties\n";
-    }
-}
-
 int main() {
     int cards[52];
     Game::printActionGuide();
     
     while (true) {
+        // Set bankroll here
+        // Ask bet amount
+        // Perhaps also ask how much buy in they would like to begin with
+
         Deck::shuffle(cards);
         int nextCard {0}; // index for next card to be dealt
 
@@ -200,7 +180,7 @@ int main() {
             }
         }
 
-        if ((!split && !bustArr[0]) || (split && anyNonBust(bustArr, 4))) {
+        if ((!split && !bustArr[0]) || (split && Game::anyNonBust(bustArr, 4))) {
             int dealerHandSize {2};
             std::cout << "Dealer: ";
             Game::printHand(dealerHand, dealerHandSize);
@@ -221,7 +201,7 @@ int main() {
 
             for (int i {0}; i < numHands; ++i) {
                 std::string playerRef = split ? "Hand " + std::to_string(i + 1) : "Player";
-                printOutcome(dealerScore, getPlayerScore(i), playerRef);
+                Game::printOutcome(dealerScore, getPlayerScore(i), playerRef);
             }
         }
         
@@ -233,9 +213,7 @@ int main() {
 
 /*
 Next:
-- Need to work on dealer hits after player stands all hands
-- Compare dealer & player hands
-- Output win / loss messages
+- Fix edge case of splitting Aces
 
 After the whole blackjack is running:
 - Add bets

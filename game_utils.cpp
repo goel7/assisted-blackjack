@@ -12,6 +12,13 @@ namespace Game {
         return type[id % 13][0];
     }
 
+    void printActionGuide() {
+        std::cout << "Type for action:\n";
+        std::cout << "* h: hit\n* s: stand\n* x: split\n";
+        std::cout << "* d: double down\n* r: surrender\n";
+        std::cout << "* p: see valid actions\n\n";
+    }
+
     void printCard(int id) {
         int rank {id % 13};
         int s {id / 13};
@@ -44,13 +51,6 @@ namespace Game {
         return total;
     }
 
-    void printActionGuide() {
-        std::cout << "Type for action:\n";
-        std::cout << "* h: hit\n* s: stand\n* x: split\n";
-        std::cout << "* d: double down\n* r: surrender\n";
-        std::cout << "* p: see valid actions\n\n";
-    }
-
     void printInitialHands(
         int dealerHand[], 
         int playerHand[], 
@@ -63,5 +63,33 @@ namespace Game {
         std::cout << "Player: ";
         Game::printHand(playerHand, playerHandSize);
         std::cout << '\n';
+    }
+    
+    // check if any hand is a non-bust hand for dealer actions
+    bool anyNonBust(bool arr[], int arrSize) {
+        for (int i {0}; i < arrSize; ++i) {
+            if (!arr[i]) return true;
+        }
+        return false;
+    }
+
+    void printOutcome(
+        int dealerScore, 
+        int playerScore, 
+        std::string_view playerRef
+    ) {
+        if (dealerScore > 21) {
+            std::cout << "Dealer busts.\n";
+            std::cout << playerRef << " wins\n";
+        }
+        else if (dealerScore > playerScore) {
+            std::cout << playerRef << " loses\n";
+        }
+        else if (dealerScore < playerScore) {
+            std::cout << playerRef << " wins\n";
+        }
+        else {
+            std::cout << playerRef << " ties\n";
+        }
     }
 }
