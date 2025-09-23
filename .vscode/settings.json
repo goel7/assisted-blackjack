@@ -46,7 +46,8 @@
     "__split_buffer": "cpp",
     "array": "cpp",
     "vector": "cpp",
-    "unordered_map": "cpp"
+    "unordered_map": "cpp",
+    "charconv": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

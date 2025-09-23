@@ -3,6 +3,30 @@
 
 #include <iostream>
 
+// check if any hand is a non-bust hand for dealer actions
+bool anyNonBust(bool arr[], int arrSize) {
+    for (int i {0}; i < arrSize; ++i) {
+        if (!arr[i]) return true;
+    }
+    return false;
+}
+
+void printOutcome(int dealerScore, int playerScore, std::string_view playerRef) {
+    if (dealerScore > 21) {
+        std::cout << "Dealer busts.\n";
+        std::cout << playerRef << " wins\n";
+    }
+    else if (dealerScore > playerScore) {
+        std::cout << playerRef << " loses\n";
+    }
+    else if (dealerScore < playerScore) {
+        std::cout << playerRef << " wins\n";
+    }
+    else {
+        std::cout << playerRef << " ties\n";
+    }
+}
+
 int main() {
     int cards[52];
     Game::printActionGuide();
@@ -30,20 +54,22 @@ int main() {
         auto getPlayerScore = [&](int handIndex) {
             return Game::getScore(playerHand[handIndex], playerHandSize[handIndex]);
         };
+
+        auto hitHand = [&](int hand[], int &handSize) {
+            hand[handSize++] = cards[nextCard++];
+        };
     
         bool split {false}; // to decide Action output statements
+        bool bustArr[4] = {};
 
         for (int i {0}; i < numHands; ++i) {
             int playerScore {getPlayerScore(i)};
             bool stand {false};
             bool bust {false};
 
-            // auto hitHand = [&](int handIndex) {
-            //     playerHand[handIndex][playerHandSize[handIndex]++] = cards[nextCard++];
+            // auto hitHand = [&](int hand[], int &handSize) {
+            //     hand[handSize++] = cards[nextCard++];
             // };
-            auto hitHand = [&](int hand[], int &handSize) {
-                hand[handSize++] = cards[nextCard++];
-            };
 
             auto splitAllowed = [&] (int hand[], int handSize) {
                 bool pair {Game::getCardRank(hand[0]) == Game::getCardRank(hand[1])};
@@ -84,7 +110,7 @@ int main() {
 
             if (playerScore == 21) {
                 std::cout << "Player got blackjack!\n";
-                if (split) {
+                if (split && i < numHands - 1) {
                     std::cout << "Move on to next hand.\n";
                 }
             }
@@ -98,8 +124,9 @@ int main() {
                 // Handle standing:
                 if (action == 's') {
                     stand = true;
-                    if (split) {
-                        std::cout << "Player stood. Move on to next hand.\n";
+                    std::cout << "Player stood at " << getPlayerScore(i) << ".\n";
+                    if (split && i < numHands - 1) {
+                        std::cout << "Move on to next hand.\n";
                     }
                     onHand++;
                 }
@@ -129,6 +156,7 @@ int main() {
                     // double bet size
                     // hit()
                     // then onHand++ to move on to next hand
+                    ;
                 }
 
                 // Handle surrender:
@@ -137,11 +165,18 @@ int main() {
                 }
 
                 playerScore = getPlayerScore(i);
+                
                 if (playerScore > 21) {
                     bust = true;
-                    std::cout << "Player (Hand " << onHand + 1 << ") busted.\n";
-
+                    bustArr[i] = bust;
                     if (split) {
+                        std::cout << "Player (Hand " << onHand + 1 << ") busted.\n";
+                    }
+                    else {
+                        std::cout << "Player busted.\n";
+                    }
+
+                    if (split && i < numHands - 1) {
                         std::cout << "Move on to next hand.\n";
                     }
 
@@ -149,12 +184,44 @@ int main() {
                 }
 
                 if (playerScore == 21) {
-                    std::cout << "Player got 21.\n";
-                    if (split) {
+                    if (playerHandSize[onHand] == 2) {
+                        std::cout << "Player got blackjack.\n";
+                    }
+                    else {
+                        std::cout << "Player got 21.\n";
+                    }
+                    
+                    
+                    if (split && i < numHands - 1) {
                         std::cout << "Move on to next hand.\n";
                     }
                     onHand++;
                 }
+            }
+        }
+
+        if ((!split && !bustArr[0]) || (split && anyNonBust(bustArr, 4))) {
+            int dealerHandSize {2};
+            std::cout << "Dealer: ";
+            Game::printHand(dealerHand, dealerHandSize);
+            std::cout << '\n';
+
+            int dealerScore {Game::getScore(dealerHand, dealerHandSize)};
+
+            while (dealerScore <= 16) {
+                hitHand(dealerHand, dealerHandSize);
+                dealerScore = Game::getScore(dealerHand, dealerHandSize);
+            }
+
+            if (dealerHandSize > 2) {
+                std::cout << "Dealer: ";
+                Game::printHand(dealerHand, dealerHandSize);
+                std::cout << '\n';
+            }
+
+            for (int i {0}; i < numHands; ++i) {
+                std::string playerRef = split ? "Hand " + std::to_string(i + 1) : "Player";
+                printOutcome(dealerScore, getPlayerScore(i), playerRef);
             }
         }
         
@@ -163,3 +230,25 @@ int main() {
 
     return 0;
 }
+
+/*
+Next:
+- Need to work on dealer hits after player stands all hands
+- Compare dealer & player hands
+- Output win / loss messages
+
+After the whole blackjack is running:
+- Add bets
+- Show bankroll after every hand
+- Develop double down function and surrender function
+
+After all this is done, blackjack has been finished.
+Next steps:
+- Make decision_engine.cpp
+- Pass in player and dealer hands
+- Show optimal decision
+- Compare player decision with optimal decision
+
+Afterwards:
+- Deploy to web using JSON or whatever
+*/
