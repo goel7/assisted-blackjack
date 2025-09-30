@@ -9,7 +9,9 @@ void runPlayerTurn(
     int& numHands,
     int& onHand,
     bool& split,
-    bool bustArr[]
+    bool bustArr[],
+    int& bankroll,
+    int& betSize
 );
 
 void runDealerActions(

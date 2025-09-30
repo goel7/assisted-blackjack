@@ -79,7 +79,9 @@ namespace Game {
         int playerHand[][12],
         int playerHandSize[],
         int numHands,
-        bool split
+        bool split,
+        int& bankroll,
+        int& betSize
     ) {
         for (int i {0}; i < numHands; ++i) {
             std::string playerRef = split ? "Hand " + std::to_string(i + 1) : "Player";
@@ -94,19 +96,25 @@ namespace Game {
                 dealerHandSize
             )};
 
-            if (dealerScore > 21) {
+            if ((dealerScore < playerScore) && (playerScore <= 21)) {
+                std::cout << playerRef << " wins\n";
+                bankroll += betSize;
+            }
+            else if (dealerScore > 21) {
                 if (i == 0) std::cout << "Dealer busts.\n";
                 std::cout << playerRef << " wins\n";
+                bankroll += betSize;
             }
             else if ((dealerScore > playerScore) || (playerScore > 21)) {
                 std::cout << playerRef << " loses\n";
-            }
-            else if ((dealerScore < playerScore) && (playerScore <= 21)) {
-                std::cout << playerRef << " wins\n";
+                bankroll -= betSize;
             }
             else {
                 std::cout << playerRef << " ties\n";
             }
         }
+
+        std::cout << '\n';
+        std::cout << "Bankroll: " << bankroll << '\n';
     }
 }

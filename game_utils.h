@@ -26,7 +26,9 @@ namespace Game {
         int playerHand[][12],
         int playerHandSize[],
         int numhands,
-        bool split
+        bool split,
+        int& bankroll,
+        int& betSize
     );
 }
 

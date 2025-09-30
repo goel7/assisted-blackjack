@@ -4,14 +4,31 @@
 
 #include <iostream>
 
+int getBankroll() {
+    int bankroll {};
+    std::cout << "Enter buy-in: ";
+    std::cin >> bankroll;
+
+    return bankroll;
+}
+
+int getBetAmount() {
+    int betSize {};
+    std::cout << "Enter bet: ";
+    std::cin >> betSize;
+
+    return betSize;
+}
+
 int main() {
     int cards[52];
     Game::printActionGuide();
+
+    int bankroll {getBankroll()};
     
     while (true) {
-        // Set bankroll here
         // Ask bet amount
-        // Perhaps also ask how much buy in they would like to begin with
+        int betSize {getBetAmount()};
 
         Deck::shuffle(cards);
         int nextCard {0}; // index for next card to be dealt
@@ -19,8 +36,8 @@ int main() {
         // initialize hands
         int playerHand[4][12];
         int dealerHand[12];
-        playerHand[0][0] = cards[nextCard];
-        dealerHand[0] = cards[nextCard];
+        playerHand[0][0] = cards[nextCard++];
+        dealerHand[0] = cards[nextCard++];
         playerHand[0][1] = cards[nextCard++];
         dealerHand[1] = cards[nextCard++];
 
@@ -44,7 +61,9 @@ int main() {
             numHands,
             onHand,
             split,
-            bustArr
+            bustArr,
+            bankroll,
+            betSize
         );
 
         if ((!split && !bustArr[0]) || (split && Game::anyNonBust(bustArr, numHands))) {
@@ -56,11 +75,11 @@ int main() {
                 playerHand,
                 playerHandSize,
                 numHands,
-                split
+                split,
+                bankroll,
+                betSize
             );
         }
-        
-        std::cout << '\n';
     }
     
 

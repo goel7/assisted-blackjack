@@ -62,7 +62,9 @@ void runPlayerTurn(
     int& numHands,
     int& onHand,
     bool& split,
-    bool bustArr[]
+    bool bustArr[],
+    int& bankroll,
+    int& betSize
 ) {
     for (int i {0}; i < numHands; ++i) {
         int playerScore {Game::getScore(playerHand[i], playerHandSize[i])};
@@ -83,9 +85,13 @@ void runPlayerTurn(
         if (playerScore == 21) {
             if (playerHandSize[onHand] == 2) {
                 std::cout << "Player got blackjack!\n";
-            } else {
+                bankroll += betSize;
+            } 
+            else {
                 std::cout << "Player got 21!\n";
+                bankroll += betSize;
             }
+
             if (split && i < numHands - 1) {
                 std::cout << "Move on to next hand.\n";
             }
@@ -151,10 +157,15 @@ void runPlayerTurn(
 
             // Handle double down:
             else if (action == 'd') {
-                // double bet size
-                // hit()
-                // then onHand++ to move on to next hand
-                ;
+                betSize *= 2;
+                
+                hitHand(
+                    playerHand[onHand], 
+                    playerHandSize[onHand], 
+                    cards, 
+                    nextCard
+                );
+                printPlayerHand(playerHand[onHand], playerHandSize[onHand]);
             }
 
             // Handle surrender:
@@ -168,9 +179,11 @@ void runPlayerTurn(
                 bustArr[i] = true;
                 if (split) {
                     std::cout << "Player (Hand " << onHand + 1 << ") busted.\n";
+                    bankroll -= betSize;
                 }
                 else {
                     std::cout << "Player busted.\n";
+                    bankroll -= betSize;
                 }
 
                 if (split && i < numHands - 1) {
@@ -183,9 +196,11 @@ void runPlayerTurn(
             else if (playerScore == 21) {
                 if (playerHandSize[onHand] == 2) {
                     std::cout << "Player got blackjack.\n";
+                    bankroll += betSize;
                 }
                 else {
                     std::cout << "Player got 21.\n";
+                    bankroll += betSize;
                 }
                 
                 
