@@ -79,16 +79,22 @@ int main() {
                 bankroll,
                 betSize
             );
+        } else {
+            std::cout << '\n';
+            std::cout << "Bankroll: " << bankroll << '\n';
         }
     }
     
-
     return 0;
 }
 
 /*
-Next:
-- Fix edge case of splitting Aces
+NOTE:
+- When player gets blackjack initially, dealer actions are still run
+    - dealer actions should not be run
+- just show dealer hand + hidden card to check for blackjack
+- also bankroll increases by 2 * betsize for some reason.
+    - it should just increase by the betsize, not 2x
 
 After the whole blackjack is running:
 - Add bets
